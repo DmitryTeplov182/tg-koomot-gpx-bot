@@ -55,16 +55,27 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 '-o', CACHE_DIR,
                 '-e',  # no POI
                 '-n'   # anonymous mode
-            ], check=True)
+            ], check=True, capture_output=True, text=True)
+        except subprocess.CalledProcessError as e:
+            error_output = e.stderr or e.output or str(e)
+            if '403' in error_output or 'AccessDenied' in error_output:
+                await update.message.reply_text(
+                    'This route is private or not accessible without authentication. Please make sure the route is public.'
+                )
+            else:
+                await update.message.reply_text(
+                    'An error occurred. If the problem persists, contact @iceflame on Telegram.'
+                )
+            return
         except Exception as e:
             await update.message.reply_text(
-                'An error occurred. Please make sure the route is public. If the problem persists, contact @iceflame on Telegram.'
+                'An error occurred. If the problem persists, contact @iceflame on Telegram.'
             )
             return
         gpx_files = glob.glob(f"{CACHE_DIR}/*-{tour_id}.gpx")
         if not gpx_files:
             await update.message.reply_text(
-                'An error occurred. Please make sure the route is public. If the problem persists, contact @iceflame on Telegram.'
+                'An error occurred. If the problem persists, contact @iceflame on Telegram.'
             )
             return
     orig_gpx = gpx_files[0]
