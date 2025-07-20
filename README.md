@@ -46,9 +46,8 @@ docker run -e TELEGRAM_TOKEN=your_token_here -v $(pwd)/cache:/app/cache komootgp
 
 ## Docker Compose
 
-Example `docker-compose.yml`:
+Example `compose.yml`:
 ```yaml
-version: '3.8'
 services:
   bot:
     build: .
@@ -60,7 +59,7 @@ services:
 
 Run:
 ```bash
-docker-compose up --build
+docker compose up -d --build
 ```
 
 ## Usage example

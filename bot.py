@@ -25,7 +25,9 @@ LIMIT_WINDOW = 3600  # seconds
 user_limits = defaultdict(lambda: deque(maxlen=DOWNLOAD_LIMIT))
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text('Send me a Komoot route link and I will send you the GPX file.')
+    await update.message.reply_text(
+        'Send me a Komoot route link and I will send you the GPX file.\n\nNote: The route must be public!'
+    )
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.message.from_user.id
@@ -39,7 +41,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text.strip()
     match = tour_id_pattern.search(text)
     if not match:
-        await update.message.reply_text('Please send a valid Komoot route link.')
+        await update.message.reply_text('Please send a valid Komoot route link.\n\nNote: The route must be public!')
         return
     tour_id = match.group(1)
     # Search for file by mask *-<id>.gpx
@@ -55,11 +57,15 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 '-n'   # anonymous mode
             ], check=True)
         except Exception as e:
-            await update.message.reply_text(f'Error downloading GPX: {e}')
+            await update.message.reply_text(
+                'An error occurred. Please make sure the route is public. If the problem persists, contact @iceflame on Telegram.'
+            )
             return
         gpx_files = glob.glob(f"{CACHE_DIR}/*-{tour_id}.gpx")
         if not gpx_files:
-            await update.message.reply_text('GPX file not found after download.')
+            await update.message.reply_text(
+                'An error occurred. Please make sure the route is public. If the problem persists, contact @iceflame on Telegram.'
+            )
             return
     orig_gpx = gpx_files[0]
     # Generate a safe file name for sending
