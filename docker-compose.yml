@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  bot:
+    build: .
+    environment:
+      - TELEGRAM_TOKEN=your_token_here
+    volumes:
+      - ./cache:/app/cache 
