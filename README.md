@@ -2,6 +2,8 @@
 
 Telegram bot for downloading Komoot routes as GPX files by link. Works only with public routes, caches downloaded files, and limits each user to 30 downloads per hour.
 
+**This bot uses [KomootGPX](https://github.com/timschneeb/KomootGPX) for downloading GPX files from Komoot.**
+
 ## Features
 - Accepts Komoot route links
 - Extracts route id
@@ -46,8 +48,9 @@ docker run -e TELEGRAM_TOKEN=your_token_here -v $(pwd)/cache:/app/cache komootgp
 
 ## Docker Compose
 
-Example `compose.yml`:
+Example `docker-compose.yml`:
 ```yaml
+version: '3.8'
 services:
   bot:
     build: .
@@ -59,7 +62,7 @@ services:
 
 Run:
 ```bash
-docker compose up -d --build
+docker-compose up --build
 ```
 
 ## Usage example
@@ -67,4 +70,8 @@ docker compose up -d --build
 2. Receive the GPX file in response
 
 ## License
-MIT 
+MIT
+
+---
+
+*This project was fully written with the help of AI.* 
