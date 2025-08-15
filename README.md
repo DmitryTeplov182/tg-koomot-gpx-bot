@@ -70,7 +70,7 @@ docker-compose up --build
 2. Receive the GPX file in response
 
 ## License
-MIT
+Beerware
 
 ---
 
